@@ -10,8 +10,8 @@ Homepage: https://github.com/LingmoOS/lingmo-kwin-scripts
 Package: lingmo-kwin-scripts
 Architecture: any
 Depends: ${misc:Depends},
- lingmo-kwin-x11,
- lingmo-kwin-wayland,
+         kwin-x11,
+         kwin-wayland,
 Breaks: deepin-kwin-data (<< 4:6.0.0~),
 Description: KWin configures/plugins on the DDE
  Let kwin work well in the Lingmo Desktop Environment.
