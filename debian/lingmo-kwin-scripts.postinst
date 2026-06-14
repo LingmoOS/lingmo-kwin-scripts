@@ -1,0 +1,169 @@
+#!/bin/bash
+
+DEEPINVER_FILENAME=/etc/deepin-version
+OSVER_FILENAME=/etc/os-version
+KWINRC_FILENAME=/etc/xdg/kwinrc
+
+
+#DEEPINVER_FILENAME=./deepin-version
+#KWINRC_FILENAME=./kwinrc
+
+DEEPINVER=Server
+
+iniOptions=()
+iniSections=()
+
+
+iniValue=
+
+
+function ReadINIfile()
+{   
+     iniFile=$1
+     section=$2
+     option=$3
+
+     
+
+     if [ "${section}" = "" ];then
+        allSections=$(awk -F '[][]' '/\[.*]/{print $2}' ${iniFile})
+        iniSections=(${allSections// /})
+        echo "[info]:iniSections size:-${#iniSections[@]}- eles:-${iniSections[@]}- "
+    elif [ "${section}" != "" ] && [ "${option}" = "" ];then
+        allSections=$(awk -F '[][]' '/\[.*]/{print $2}' ${iniFile})
+        echo $allSections|grep ${section}
+        if [ "$?" = "1" ];then
+            echo "[error]:section --${section}-- not exist!"
+            return 0
+        fi
+        a=$(awk "/\[${section}\]/{a=1}a==1"  ${iniFile}|sed -e'1d' -e '/^$/d'  -e 's/[ \t]*$//g' -e 's/^[ \t]*//g' -e 's/[ ]/@G@/g' -e '/\[/,$d' )
+        b=(${a})
+        for i in ${b[@]};do
+          if [ -n "${i}" ]||[ "${i}" i!= "@S@" ];then
+              iniOptions[${#iniOptions[@]}]=${i//@G@/ }
+          fi
+        done
+        echo "[info]:iniOptions size:-${#iniOptions[@]}- eles:-${iniOptions[@]}-"
+    elif [ "${section}" != "" ] && [ "${option}" != "" ];then
+        iniValue=$(awk -F '=' '/\['${section}'\]/{a=1} (a==1 && "'${option}'"==$1){a=0;print $2}' ${iniFile}) 
+ 
+        #iniValue=`awk -F '=' "/\[${section}\]/{a=1}a==1" ${iniFile}|sed -e '1d' -e '/^$/d' -e '/^\[.*\]/,$d' -e "/^${option}.*=.*/!d" -e "s/^${option}.*= *//"`
+        echo $iniValue
+    fi
+
+}
+
+
+function writeInifile()
+{
+	iniFile=$1
+	section=$2
+	option=$3
+	value=$4
+
+#	echo "INPUT "$1 $2 $3 $4 
+	iniValue='default'
+	iniOptions=()
+	iniSections=()
+
+    allSections=$(awk -F '[][]' '/\[.*]/{print $2}' ${iniFile})
+    iniSections=(${allSections// /})
+    sectionFlag="0"
+    for temp in ${iniSections[@]};do
+        if [ "${temp}" = "${section}" ];then
+            sectionFlag="1"
+            break
+        fi
+    done
+ 
+    if [ "$sectionFlag" = "0" ];then
+        echo "[${section}]" >>${iniFile}
+    fi
+    awk "/\[${section}\]/{a=1}a==1" ${iniFile}|sed -e '1d' -e '/^$/d'  -e 's/[ \t]*$//g' -e 's/^[ \t]*//g' -e '/\[/,$d'|grep "${option}.\?=">/dev/null
+    if [ "$?" = "0" ];then
+        sectionNum=$(sed -n -e "/\[${section}\]/=" ${iniFile})
+
+        echo "section num  "+$sectionNum
+        sed -i "${sectionNum},/^\[.*\]/s/\(${option}.\?=\).*/\1${value}/g" ${iniFile}
+        echo "[success] update [$iniFile][$section][$option][$value]"
+    else
+        sed -i "/^\[${section}\]/a\\${option}=${value}" ${iniFile}
+        echo "[success] add [$iniFile][$section][$option][$value]"
+    fi
+}
+
+
+
+if [ ! -f "$OSVER_FILENAME" ] && [ ! -f "$DEEPINVER_FILENAME" ];then
+    echo "[error:] $DEEPINVER_FILENAME and $OSVER_FILENAME not exist"
+    exit
+elif [ ! -f "$OSVER_FILENAME" ]; then
+    ReadINIfile  $DEEPINVER_FILENAME "Release" "Type" 
+else
+    ReadINIfile  $OSVER_FILENAME "Version" "ProductType" 
+fi
+#echo $iniValue
+#echo $DEEPINVER
+
+if [ $iniValue = $DEEPINVER ]; then 
+    writeInifile $KWINRC_FILENAME "Compositing" "OpenGLIsUnsafe" "true"  
+fi
+
+
+declare -A needOverridekeyValuePairs
+
+# 定义要替换kglobalshortcutsrc的key
+declare -a needOverrideKey=(
+    "Window to Desktop 5"
+    "Window to Desktop 6"
+    "Switch to Desktop 5"
+    "Switch to Desktop 6"
+)
+
+systemKGlobalFile="/etc/xdg/kglobalshortcutsrc"
+if [ ! -e "$systemKGlobalFile" ]; then
+    exit
+fi
+
+function parseAndOverideConfigFile() {
+    while IFS='=' read -r key value; do
+        if [[ "$key" != \[*\] ]]; then
+            if [[ ! -z "$key" ]]; then
+                if [[ "$1" == "$userKGlobalFile" ]]; then
+                    for overide in "${needOverrideKey[@]}";do
+                        if [ "$key" == "$overide" ];then
+                            sed -i'' -e "s/$key.*/${needOverridekeyValuePairs[$key]}/" $userKGlobalFile
+                        fi
+                    done
+                elif [[ "$1" == "$systemKGlobalFile" ]]; then
+                    for overide in "${needOverrideKey[@]}";do
+                        if [ "$key" == "$overide" ];then
+                            needOverridekeyValuePairs[$key]="$key=$value"
+                        fi
+                    done
+                fi
+            fi
+        fi
+    done < "$1"
+}
+
+# 获取所有用户目录
+user_dirs=$(ls -d /home/*)
+
+# 遍历每个用户目录
+for dir in $user_dirs; do
+    # 提取用户名
+    user=$(basename $dir)
+
+    if [ -z $user ];then
+        continue
+    fi
+
+    userKGlobalFile="/home/$user/.config/kglobalshortcutsrc"
+    if [ ! -e "$userKGlobalFile" ]; then
+	continue
+    fi
+
+    parseAndOverideConfigFile "$systemKGlobalFile"
+    parseAndOverideConfigFile "$userKGlobalFile"
+done

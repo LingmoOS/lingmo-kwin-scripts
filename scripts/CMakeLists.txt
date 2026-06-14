@@ -1,0 +1,10 @@
+install(
+    DIRECTORY
+    screenedge/runcommandaction
+    screenedge/closewindowaction
+    ddeshortcuts
+    ddelaunchpad
+    gtkframe
+    DESTINATION
+    ${CMAKE_INSTALL_DATADIR}/kwin/scripts
+)

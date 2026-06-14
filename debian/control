@@ -1,0 +1,25 @@
+Source: lingmo-kwin-scripts
+Section: devel
+Priority: optional
+Maintainer: Deepin Packages Builder <packages@deepin.com>
+Build-Depends: debhelper (>=9),
+ cmake
+Standards-Version: 3.9.8
+Homepage: https://github.com/LingmoOS/lingmo-kwin-scripts
+
+Package: lingmo-kwin-scripts
+Architecture: any
+Depends: ${misc:Depends},
+ lingmo-kwin-x11,
+ lingmo-kwin-wayland,
+Breaks: deepin-kwin-data (<< 4:6.0.0~),
+Description: KWin configures/plugins on the DDE
+ Let kwin work well in the Lingmo Desktop Environment.
+
+Package: lingmo-kwin-scripts-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}
+Description: Developer package of lingmo-kwin-scripts
+ Provide lingmo-kwin-scripts plugin implementation basis files.
+
