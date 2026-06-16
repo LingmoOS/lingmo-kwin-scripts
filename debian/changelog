@@ -1,3 +1,9 @@
+lingmo-kwin-scripts (6.1.1.lingmo.1) unstable; urgency=medium
+
+  * new release for Lingmo OS.
+
+ -- Lingmo OS Team <team@lingmo.org>  Tue, 16 Jun 2026 18:24:00 +0800
+
 lingmo-kwin-scripts (6.1.0) unstable; urgency=medium
 
   * rebuild for Lingmo OS.
