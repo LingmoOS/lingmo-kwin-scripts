@@ -37,7 +37,7 @@ BuildRequires:  qt5-qtbase-private-devel
 BuildRequires:  qt5-qtdeclarative-devel
 BuildRequires:  kf5-ki18n-devel
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
-Requires:       dde-qt5integration%{?_isa}
+Requires:       lingmo-qt5integration%{?_isa}
 #Requires:       kwin%{?_isa} >= 5.17
 Requires:       kwin%{?_isa} >= 5.15
 # since F31

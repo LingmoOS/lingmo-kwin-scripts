@@ -6,6 +6,6 @@ etc/xdg/kwinrulesrc
 #usr/lib/*/*.so.*
 #usr/lib/*/qt5
 usr/share/kwin/scripts
-usr/share/deepin-log-viewer/deepin-log.conf.d/org.deepin.kwin.json
+usr/share/lingmo-log-viewer/deepin-log.conf.d/org.deepin.kwin.json
 usr/share/dsg/configs/org.kde.kwin/*.json
 usr/share/dsg/configs/org.kde.kwin.decoration/org.kde.kwin.decoration.titlebar.json
