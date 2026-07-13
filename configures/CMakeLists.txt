@@ -31,7 +31,7 @@ install(
     FILES
     org.deepin.kwin.json
     DESTINATION
-    "${CMAKE_INSTALL_DATADIR}/deepin-log-viewer/deepin-log.conf.d/"
+    "${CMAKE_INSTALL_DATADIR}/lingmo-log-viewer/deepin-log.conf.d/"
 )
 
 if (USE_KWIN_NO_SCALE)
