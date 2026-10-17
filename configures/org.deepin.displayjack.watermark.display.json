@@ -7,11 +7,15 @@
             "serial": 0,
             "flags": [],
             "name": "WaterMark_Available",
+            "name[en]": "Watermark switch",
             "name[zh_CN]": "水印开关设置",
+            "name[zh_TW]": "浮水印開關設定",
             "description[zh_CN]": "此配置为水印是否启用，默认为启用：当配置为启用时，可以调用水印进行显示；当配置为禁用时，水印为禁用状态；",
+            "description[zh_TW]": "此配置為浮水印是否啟用，預設為啟用：當配置為啟用時，可以調用浮水印進行顯示；當配置為禁用時，浮水印為禁用狀態；",
             "description": "",
+            "description[en]": "Whether the watermark is enabled. Enabled by default: when enabled, the watermark can be shown; when disabled, the watermark is hidden.",
             "permissions": "readwrite",
             "visibility": "public"
         }
     }
-  }
+}

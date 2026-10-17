@@ -5,6 +5,7 @@ install(
     ddeshortcuts
     ddelaunchpad
     gtkframe
+    watermark
     DESTINATION
     ${CMAKE_INSTALL_DATADIR}/kwin/scripts
 )

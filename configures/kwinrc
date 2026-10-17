@@ -1,5 +1,6 @@
 [Plugins]
 blurEnabled=true
+watermarkEnabled=true
 scissorEnabled=true
 enforcedecoEnabled=false
 minimizeallEnabled=true
@@ -106,3 +107,7 @@ CommandAll3=Nothing
 # for wayland platform
 [ModifierOnlyShortcuts]
 Meta=com.deepin.dde.Launcher,/com/deepin/dde/Launcher,com.deepin.dde.Launcher,Toggle
+
+# 非正式版本（Alpha/Beta）测试水印开关，正式版本不显示；Disabled 可关闭
+[Script-watermark]
+WaterMark_Available=Enabled

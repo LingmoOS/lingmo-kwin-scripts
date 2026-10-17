@@ -1,0 +1,26 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Lingmo OS Team"
+            }
+        ],
+        "Description": "Show a testing watermark on non-release builds",
+        "Description[en]": "Show a testing watermark on non-release builds",
+        "Description[zh_CN]": "在非正式版本上显示测试水印",
+        "Description[zh_TW]": "在非正式版本上顯示測試浮水印",
+        "EnabledByDefault": true,
+        "Icon": "preferences-system-windows-script-test",
+        "Id": "watermark",
+        "License": "GPL",
+        "Name": "Testing Watermark",
+        "Name[en]": "Testing Watermark",
+        "Name[zh_CN]": "测试水印",
+        "Name[zh_TW]": "測試浮水印",
+        "Version": "1.0"
+    },
+    "X-KDE-PluginKeyword": "watermark",
+    "X-Plasma-API": "declarativescript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}
