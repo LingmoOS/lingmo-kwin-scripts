@@ -1,3 +1,15 @@
+lingmo-kwin-scripts (6.1.2.lingmo.1) unstable; urgency=medium
+
+  * 新增测试水印：非正式版本在桌面右下角显示「版本类型 + 构建号」与
+    「此副本仅供测试」（zh_CN/zh_TW/en，跟随系统语言）。
+    版本类型由 OsBuild 按 base-files 的规则派生（含 a 为 Alpha、含 b 为
+    Beta、否则 Release），正式版本不显示；数据经 org.deepin.dde.SystemInfo1
+    读取，取不到则不显示。窗口标题使用 deepin-watermark，复用 kwin 已有
+    的水印判定，不进入任务栏、Alt-Tab、多任务视图与窗口截图。
+    运行时开关为 kwinrc 的 [Script-watermark] WaterMark_Available。
+
+ -- Lingmo OS Team <team@lingmo.org>  Sun, 18 Oct 2026 00:32:15 +0800
+
 lingmo-kwin-scripts (6.1.1.lingmo.1) unstable; urgency=medium
 
   * new release for Lingmo OS.
