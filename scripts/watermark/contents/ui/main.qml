@@ -30,10 +30,14 @@ Window {
     color: "transparent"
     visible: root.shown
 
+    // 距屏幕底边的距离：要避开底部 dock（dock 高约 48–64px），故留出更大空间。
+    // 若 dock 高度改了，调这一个值即可。
+    readonly property int bottomMargin: 96
+
     width: column.implicitWidth
     height: column.implicitHeight
     x: Screen.width - width - 16
-    y: Screen.height - height - 16
+    y: Screen.height - height - root.bottomMargin
 
     // 取到的构建号，拿不到时保持空串
     property string buildVersion: ""
@@ -107,7 +111,7 @@ Window {
 
     function reposition() {
         root.x = Screen.width - root.width - 16
-        root.y = Screen.height - root.height - 16
+        root.y = Screen.height - root.height - root.bottomMargin
     }
 
     KWinModule.DBusCall {
